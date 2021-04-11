@@ -24,3 +24,61 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+/* --------------------------------- REGLAS ------------------------------------- */
+
+// FONDO Y TOOLBAR
+ion-content{
+    --ion-background-color: #F2F3EA;
+}
+
+ion-toolbar{
+    --ion-background-color: #F2F3EA;
+}
+
+.tab-selected{
+    color: var( --ion-color-primary ) !important;
+}
+
+
+
+
+//TIPOLOGIA
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('./assets/fonts/Nunito-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Nunito-bold';
+    src: url('./assets/fonts/Nunito-Bold.ttf');
+}
+
+
+*{
+    font-family: 'Nunito';
+}
+
+ion-title{
+    font-family: 'Nunito-bold';
+    font-size: 24px;
+}
+
+
+//BOTONES
+
+ion-button {
+    text-transform: none;
+    font-family: 'Nunito';
+    font-size: 17px;
+}
+
+
+
+
+
+
+
+

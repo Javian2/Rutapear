@@ -1,0 +1,26 @@
+
+ion-img{
+    height: 80px;
+    width: 80px;
+}
+
+input{
+
+    border-radius: 20px;
+    border: 2px solid white;
+    width: 85vw;
+    height: 2.5em;
+    padding-left: 10px;
+    background-color: white;
+    font-weight: bold;
+}
+    
+input:focus {
+    outline: none;
+    background-color: rgb(255, 102, 51, 0.3);
+    border: none;
+    /* border: 3px solid var( --ion-color-primary );  */
+}
+
+
+

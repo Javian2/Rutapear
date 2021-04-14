@@ -1,17 +1,20 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-    <ion-title *ngIf="!iniciadoSesion" class="ion-text-center" color="primary">
-      Login
-    </ion-title>
-    <ion-title *ngIf="iniciadoSesion" class="ion-text-center" color="primary">
-      Perfil
+
+    <ion-buttons slot="start">
+      <ion-back-button color="primary"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="ion-text-center" color="primary">
+      Registro
     </ion-title>
 
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content [fullscreen]="true" *ngIf="!iniciadoSesion">
+
+<ion-content [fullscreen]="true">
 
   <ion-grid fixed>
     <ion-row>
@@ -28,21 +31,26 @@
     <ion-row>
       <ion-col size="11" class="ion-margin-horizontal">
 
-        <form #forma="ngForm" (ngSubmit)="iniciarSesion(forma);">
-          
+        <form #forma="ngForm" (ngSubmit)="registrar(forma);">
+
           <div style="display: flex; flex-direction: column;">
+            <ion-label color="primary" style="font-size: 18px; font-weight: bold;">Nombre</ion-label>
+            <input type="text" class="ion-margin-top" ngModel name="nombre" required>
+          </div>
+          
+          <div style="display: flex; flex-direction: column;" class="ion-margin-top">
             <ion-label color="primary" style="font-size: 18px; font-weight: bold;">Email</ion-label>
-            <input type="email" class="ion-margin-top" name="email" ngModel>
+            <input type="email" class="ion-margin-top" ngModel name="email" required>
           </div>
 
           <div style="display: flex; flex-direction: column;" class="ion-margin-top">
             <ion-label color="primary" style="font-size: 18px; font-weight: bold;">Contraseña</ion-label>
-            <input type="password" class="ion-margin-top" name="password" ngModel>
+            <input type="password" class="ion-margin-top" ngModel name="password" required>
           </div>
           
           <div style="display: flex; justify-content: center; margin-top: 2em;">
             <ion-button class="ion-margin-top" shape="round" color="primary" type="submit" style="text-align: center; font-weight: bold;">
-              Iniciar sesión
+              Registrarme
             </ion-button>
           </div>
 
@@ -58,11 +66,11 @@
 
 
         <div style="display: flex; justify-content: center; font-size: 18px; margin-top: 2em; font-weight: bold;">
-          <ion-label color="secondary">¿No tienes una cuenta?</ion-label>
+          <ion-label color="secondary">¿Ya tienes una cuenta?</ion-label>
         </div>
         <div style="display: flex; justify-content: center;">
-          <ion-button (click)="abrirRegistro();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
-            Registrarme
+          <ion-button (click)="abrirLogin();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
+            Iniciar sesión
           </ion-button>
         </div>
         
@@ -75,17 +83,3 @@
 
 </ion-content>
 
-  
-
-<ion-content [fullscreen]="true" *ngIf="iniciadoSesion">
-
-  <div style="display: flex; justify-content: center;">
-
-    <ion-button (click)="cerrarSesion();" class="ion-margin-top" shape="round" color="primary" style="text-align: center; font-weight: bold;">
-      Cerrar sesión
-    </ion-button>
-
-  </div>
-
-
-</ion-content>

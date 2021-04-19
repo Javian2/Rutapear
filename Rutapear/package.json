@@ -24,6 +24,7 @@
     "cordova-android": "8.1.0",
     "firebase": "^8.3.3",
     "mapbox-gl": "^2.2.0",
+    "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

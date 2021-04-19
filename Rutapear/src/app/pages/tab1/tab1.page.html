@@ -1,12 +1,88 @@
-<ion-header [translucent]="true" class="ion-no-border">
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title class="ion-text-center" color="primary">
       Rutas
     </ion-title>
   </ion-toolbar>
+
+  <!-- BARRA DE BUSQUEDA Y FILTROS -->
+
+  <ion-toolbar>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="10">
+          
+            <ion-searchbar 
+              mode="ios" 
+              placeholder="Buscar por ruta de la tapa, Valencia..." 
+              (ionChange)="buscar($event)" 
+              [value]="textoBuscar"
+              [debounce]="250">
+            </ion-searchbar>
+
+        </ion-col>
+
+        <ion-col size="2">
+          
+          <div style="display: flex; justify-content: center; align-items: center; height: 37px; background-color: white; border-radius: 8px;">
+            <ion-icon color="primary" style="font-size: 20px; --ionicon-stroke-width: 40px;" name="filter-outline"></ion-icon>
+          </div>
+          
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+  
+
+
+  
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
+
+
+<ion-content>
+
+  <!-- LISTA DE RUTAS -->
   
+  <ion-list lines="none">
+    <ion-item *ngFor="let ruta of rutas | filtroRuta: textoBuscar: 'nombre'">
+      
+      <ion-grid class="ion-no-margin">
+        <ion-row style="background-color: white; border-radius: 20px; max-height: 100px;" (click)="abrirEstablecimiento(ruta)">
+          <ion-col size="4" class="ion-no-padding">
+            <img [src]="ruta.imagen" >
+          </ion-col>
+          <ion-col size="6">
+
+            <ion-label color="primary" style="font-size: 14px; font-weight: bold; font-family: 'Nunito';">{{ruta.nombre}}</ion-label>
+            <ion-label class="ion-align-items-center" class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';">
+              <ion-icon name="location-outline"></ion-icon>
+              {{ruta.ubicacion}}
+            </ion-label>
+            <ion-label class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';"> 
+              <ion-icon name="calendar-outline" style="margin-right: 2px;"></ion-icon>{{ruta.fecha_inicio}} - {{ruta.fecha_final}}
+            </ion-label>
+
+          </ion-col>
+
+          <ion-col size="2" class="ion-text-right">
+
+            
+            <ion-icon name="heart-outline" style="font-size: 16px;" class="ion-margin-horizontal"></ion-icon>
+           
+            
+
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+
+    </ion-item>
+  </ion-list>
+
+  <!-- INFINITE SCROLL -->
+
 
 </ion-content>

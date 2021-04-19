@@ -29,3 +29,20 @@ ion-searchbar{
         font-size: 16px;
     }
 
+ion-segment{
+    --background: white;   
+}
+
+ion-segment-button ion-label{
+    font-family: 'Nunito';
+    font-size: 14px;
+}
+
+ion-segment-button{
+    --background-checked: var( --ion-color-primary ) !important;
+    --background-focused: var( --ion-color-primary ) !important;
+    z-index: 10;
+    --indicator-color: transparent!important;
+    --color-checked: white;
+}
+

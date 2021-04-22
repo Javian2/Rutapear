@@ -21,10 +21,13 @@ import { FormsModule } from '@angular/forms';
 // PIPES
 
 
+
+//NATIVE
+
+
 import { PipesModule } from './pipes/pipes.module';
-
-
-
+import { Camera } from '@ionic-native/camera/ngx';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 
 
@@ -42,7 +45,12 @@ import { PipesModule } from './pipes/pipes.module';
     FormsModule,
     PipesModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    Camera,
+    BarcodeScanner,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    
+  ], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}

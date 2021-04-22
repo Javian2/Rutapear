@@ -65,7 +65,7 @@
           <ion-col size="4" class="ion-no-padding">
             <img [src]="establecimiento.foto_tapa" >
           </ion-col>
-          <ion-col size="6">
+          <ion-col size="5">
 
             <ion-label color="primary" style="font-size: 14px; font-weight: bold; font-family: 'Nunito';">{{establecimiento.nombre}}</ion-label>
             <ion-label class="ion-align-items-center" class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';">
@@ -75,13 +75,20 @@
             
           </ion-col>
 
-          <ion-col size="2" class="ion-text-right">
+          <ion-col size="3" class="ion-text-right">
 
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
               <ion-icon name="heart-outline" style="font-size: 16px;" class=""></ion-icon>
               <ion-icon name="share-social-outline" style="font-size: 16px;" class=""></ion-icon>
 
             </div>
+
+            <ion-label *ngIf="establecimiento.sellado" color="primary" class="ion-margin-top" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 4.5em; margin-right: 1em;">
+              Sellado
+            </ion-label>
+            <ion-button *ngIf="!establecimiento.sellado" shape="round" color="primary" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 4em; margin-right: 0.6em;" (click)="sellarEstablecimiento()">
+              Sellar
+            </ion-button>
            
             
 

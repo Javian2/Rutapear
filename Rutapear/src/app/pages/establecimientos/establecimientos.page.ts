@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EstablecimientosService } from '../../services/establecimientos.service';
+import { SelladoService } from '../../services/sellado.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
 
 @Component({
   selector: 'app-establecimientos',
@@ -14,33 +18,43 @@ export class EstablecimientosPage implements OnInit {
   establecimientos:any[] = []
   textoBuscar:string;
   valorSegment:string = 'lista';
-  sellado:boolean = false;
+  sellado:any = false;
+  establecimientosId:any[] = [];
 
 
   constructor(
     public modalController: ModalController,
-    public _establecimientos:EstablecimientosService
+    public _establecimientos:EstablecimientosService,
+    public _sellado:SelladoService,
+    public _firestore:AngularFirestore,
+    public barcodeScanner:BarcodeScanner
   ) { }
 
-  ngOnInit() {
+
+  ngOnInit(){
     this._establecimientos.getEstablecimientos(this.ruta.id)
-    .subscribe(data => {
-      this.establecimientos = data.map(e => {
+      .subscribe(data => {
+        data.forEach(establecimiento => {
+          
+          this._sellado.getSellados(establecimiento.payload.doc.id)
+            .subscribe(coincide => {
+              this.sellado = coincide;
 
-        //AQUI HACER LA LLAMADA A ESTABLECIMIENTOS
+              
+              if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
+                this.establecimientosId.push(establecimiento.payload.doc.id);
+                this.establecimientos.push({
+                  nombre: establecimiento.payload.doc.data()['nombre'],
+                  foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
+                  nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
+                  sellado: this.sellado
+                })
+              }
 
-        
-
-
-
-
-        return {
-          nombre: e.payload.doc.data()['nombre'],
-          foto_tapa: e.payload.doc.data()['foto_tapa'],
-          nombre_tapa: e.payload.doc.data()['nombre_tapa']
-        }
+              
+            })
+        });
       })
-    })
   }
 
   cerrarEstablecimiento(){
@@ -57,4 +71,13 @@ export class EstablecimientosPage implements OnInit {
     this.valorSegment = ev.detail.value;
   }
 
+  sellarEstablecimiento(){
+    this.barcodeScanner.scan().then(barcodeData => {
+      console.log('Barcode data', barcodeData)
+    }).catch(err => {
+      console.log('Error', err)
+    })
+  }
+
+  
 }

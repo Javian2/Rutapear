@@ -59,11 +59,17 @@ export class SelladoService {
       })
       return subject.asObservable();
   }
+
+  postSellado(sellado){
+    this._firestore.collection('sellado').add(sellado);
+  }
   
 
    getEstablecimientos(id){
     return this._firestore.collection(`rutas/${id}/establecimientos`).snapshotChanges();
   }
+
+  
 
 }
 

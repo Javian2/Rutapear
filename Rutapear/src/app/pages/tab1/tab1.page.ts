@@ -57,7 +57,8 @@ export class Tab1Page implements OnInit {
             ubicacion: e.payload.doc.data()['ubicacion'],
             fecha_inicio: this.fecha_inicio,
             fecha_final: this.fecha_final,
-            imagen: e.payload.doc.data()['imagen']
+            imagen: e.payload.doc.data()['imagen'],
+            centro: e.payload.doc.data()['centro']
           }
         })
       })

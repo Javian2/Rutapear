@@ -21,15 +21,17 @@ import { FormsModule } from '@angular/forms';
 // PIPES
 
 
+import { PipesModule } from './pipes/pipes.module';
 
 //NATIVE
 
 
-import { PipesModule } from './pipes/pipes.module';
 import { Camera } from '@ionic-native/camera/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
+//HTTP
 
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -43,7 +45,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,
-    PipesModule
+    PipesModule,
+    HttpClientModule
   ],
   providers: [
     Camera,

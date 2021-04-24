@@ -61,6 +61,10 @@ export class EstablecimientosPage implements OnInit {
   //FUNCION QUE SELLA EL ESTABLECIMIENTO, CÓDIGO QR
   sellarEstablecimiento(id){
 
+    var options = {
+      resultDisplayDuration: 0
+    }
+
     if(localStorage.getItem('user') == null){
       this.modalController.dismiss({
         'dismissed': true
@@ -69,7 +73,7 @@ export class EstablecimientosPage implements OnInit {
       this.router.navigate(['/tabs/tab4'])
     }
     else{
-      this.barcodeScanner.scan().then(qrData => {
+      this.barcodeScanner.scan(options).then(qrData => {
         if(qrData.text == id){
           this.qrCorrecto('Establecimiento sellado correctamente')
           //PUSH
@@ -88,10 +92,11 @@ export class EstablecimientosPage implements OnInit {
         else{
           this.qrIncorrecto('El código QR de este establecimiento es incorrecto')
         }
-        /* console.log('Barcode data', qrData) */
       }).catch(err => {
         this.qrIncorrecto('Hubo un error')
       })
+
+      
     }
     
       
@@ -154,10 +159,7 @@ export class EstablecimientosPage implements OnInit {
                   sellado: this.sellado
                 })
               }
-
-              console.log(this.establecimientos);
-
-              
+   
             })
         });
       })

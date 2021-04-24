@@ -1,0 +1,22 @@
+#mapa{
+    width: 100% !important;
+    height: 100% !important;
+    background-color: white;
+    z-index: 98;
+}
+
+#fly{
+    display: block;
+    position: relative;
+    margin: 0px auto;
+    width: 50%;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    background: #ee8a65;
+    z-index: 99;
+}

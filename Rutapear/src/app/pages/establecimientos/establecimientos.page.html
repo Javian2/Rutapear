@@ -100,7 +100,11 @@
     </ion-item>
   </ion-list>
 
-  <!-- INFINITE SCROLL -->
+  <!--  VISUALIZACION MAPA -->
+
+  <app-mapa [establecimientos]="establecimientos" [establecimientosId]="establecimientosId" [ruta]="ruta" *ngIf="valorSegment == 'mapa'"></app-mapa>
+
+
 
 
 </ion-content>

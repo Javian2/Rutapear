@@ -8,6 +8,7 @@ import { EstablecimientosPageRoutingModule } from './establecimientos-routing.mo
 
 import { EstablecimientosPage } from './establecimientos.page';
 import { PipesModule } from '../../pipes/pipes.module';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     FormsModule,
     IonicModule,
     EstablecimientosPageRoutingModule,
-    PipesModule
+    PipesModule,
+    ComponentsModule
   ],
   declarations: [EstablecimientosPage]
 })

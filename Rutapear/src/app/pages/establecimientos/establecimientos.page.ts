@@ -156,7 +156,8 @@ export class EstablecimientosPage implements OnInit {
                   nombre: establecimiento.payload.doc.data()['nombre'],
                   foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
                   nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
-                  sellado: this.sellado
+                  sellado: this.sellado,
+                  ubicacion:establecimiento.payload.doc.data()['ubicacion']
                 })
               }
    

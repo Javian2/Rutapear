@@ -5,18 +5,81 @@
     z-index: 98;
 }
 
-#fly{
-    display: block;
+#irCentro{
+    display: flex;
     position: relative;
-    margin: 0px auto;
-    width: 50%;
-    height: 40px;
-    padding: 10px;
-    border: none;
+    height: 30px;
+    width: 30px;
     border-radius: 3px;
-    font-size: 12px;
     text-align: center;
-    color: #fff;
-    background: #ee8a65;
+    color: black;
+    background: white;
     z-index: 99;
+    border: 1px solid grey;
+    margin-top: 6vh;
+    margin-left: 90.3vw;
+    justify-content: center;
+    align-items: center;
+}
+
+    #irCentro ion-icon{
+        --ionicon-stroke-width: 40px;
+        font-size: 18px;
+
+    }
+
+    
+
+#irUbicacion{
+    display: flex;
+    position: relative;
+    height: 30px;
+    width: 30px;
+    border-radius: 3px;
+    text-align: center;
+    color: black;
+    background: white;
+    z-index: 99;
+    border: 1px solid grey;
+    margin-top: 6vh;
+    margin-left: 90.3vw;
+    justify-content: center;
+    align-items: center;
+}
+
+    #irUbicacion ion-icon{
+        --ionicon-stroke-width: 40px;
+        font-size: 18px;
+
+    }
+
+
+
+ion-grid{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
+}
+
+img{
+    
+    height: 120px;
+    width: 150px !important;
+}
+
+ion-icon{
+    --ionicon-stroke-width: 30px;
+}
+
+.mapbox-ctrl{
+    position: fixed !important;
+    left: 0 !important;
+    width: 200px !important;
+    border-radius: 10px !important;
+}
+
+.mapboxgl-ctrl-geocoder {
+    width: 50px !important;
 }

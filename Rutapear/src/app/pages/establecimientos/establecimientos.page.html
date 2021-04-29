@@ -13,7 +13,7 @@
 
   <!-- BARRA DE BUSQUEDA Y FILTROS -->
 
-  <ion-toolbar>
+  <ion-toolbar *ngIf="valorSegment == 'lista'">
     <ion-grid fixed>
       <ion-row>
         <ion-col size="10">
@@ -72,6 +72,11 @@
               <ion-icon name="pizza-outline"></ion-icon>
               {{establecimiento.nombre_tapa}}
             </ion-label>
+            <ion-label class="ion-align-items-center" class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';">
+              <ion-icon name="location-outline"></ion-icon>
+              {{establecimiento.ubicacion}}
+            </ion-label>
+            
             
           </ion-col>
 

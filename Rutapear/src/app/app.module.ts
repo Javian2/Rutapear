@@ -28,6 +28,9 @@ import { PipesModule } from './pipes/pipes.module';
 
 import { Camera } from '@ionic-native/camera/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+
 
 //HTTP
 
@@ -51,6 +54,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     Camera,
     BarcodeScanner,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
     
   ], 

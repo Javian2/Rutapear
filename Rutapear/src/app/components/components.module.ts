@@ -2,15 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { MapaComponent } from './mapa/mapa.component';
+import { PopoverInfoComponent } from './popover-info/popover-info.component';
 
 
 
 @NgModule({
   declarations: [
-    MapaComponent
+    MapaComponent,
+    PopoverInfoComponent
   ],
   exports: [
-    MapaComponent
+    MapaComponent,
+    PopoverInfoComponent
   ],
   imports: [
     CommonModule,

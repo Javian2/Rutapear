@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SelladoService } from '../../services/sellado.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +8,22 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(
+    private _sellado:SelladoService
+  ) {}
+
+  activarHistoricos(i:number){
+    switch (i) {
+      case 1:
+        this._sellado.activarHistorico = false;
+        break;
+
+      case 2: 
+        this._sellado.activarHistorico = true;
+    
+      default:
+        break;
+    }
+  }
 
 }

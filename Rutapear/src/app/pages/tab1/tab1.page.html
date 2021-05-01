@@ -24,8 +24,9 @@
 
         <ion-col size="2">
           
-          <div style="display: flex; justify-content: center; align-items: center; height: 37px; background-color: white; border-radius: 8px;">
+          <div (click)="presentPopover($event)" style="display: flex; justify-content: center; align-items: center; height: 37px; background-color: white; border-radius: 8px;">
             <ion-icon color="primary" style="font-size: 20px; --ionicon-stroke-width: 40px;" name="filter-outline"></ion-icon>
+            <ion-badge mode="ios" *ngIf="activarHistorico && contadorFiltros > 0" style="position: absolute; margin-left: 3em; margin-top: 3em;" color="primary">{{contadorFiltros}}</ion-badge>
           </div>
           
         </ion-col>

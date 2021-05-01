@@ -1,0 +1,20 @@
+<ion-item lines="none">
+  <ion-label style="font-size: 20px;">Filtros</ion-label>
+  <ion-icon (click)="cerrarPopover();" style="font-size: 20px; font-weight: bold;" color="danger" slot="end" name="close-circle-outline"></ion-icon>
+</ion-item>
+
+<ion-item *ngIf="activarHistorico" mode="ios" lines="none">
+  <ion-checkbox #checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckbox($event)" color="primary" checked></ion-checkbox>
+  <ion-label>Visitadas</ion-label>
+</ion-item>
+
+<ion-item *ngIf="!activarHistorico" mode="ios" lines="none">
+  <ion-checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckbox($event)" color="primary"></ion-checkbox>
+  <ion-label>Visitadas</ion-label>
+</ion-item>
+
+<ion-item mode="ios" lines="none">
+  <ion-button slot="end" shape="round" color="primary" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold;" (click)="aplicarCheckbox()">
+    Aplicar
+  </ion-button>
+</ion-item>

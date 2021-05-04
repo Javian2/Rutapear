@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { EstablecimientosFavoritosService } from '../../services/establecimientos-favoritos.service';
 
 
 
@@ -23,6 +24,7 @@ export class EstablecimientosPage implements OnInit {
   valorSegment:string = 'lista';
   sellado:any = false;
   establecimientosId:any[] = [];
+  autenticado:boolean
 
 
   constructor(
@@ -32,9 +34,21 @@ export class EstablecimientosPage implements OnInit {
     public _firestore:AngularFirestore,
     public barcodeScanner:BarcodeScanner,
     public toastController: ToastController,
-    public router:Router
+    public router:Router,
+    private _establecimientosFav:EstablecimientosFavoritosService
   ) { }
 
+
+  ionViewDidEnter(){
+
+
+    if(localStorage.getItem('user')){
+      this.autenticado = true;
+    }
+    else{
+      this.autenticado = false;
+    }
+  }
 
   ngOnInit(){
     this.getEstablecimientos();
@@ -148,22 +162,54 @@ export class EstablecimientosPage implements OnInit {
             .subscribe(coincide => {
               this.sellado = coincide;
 
-              
-              if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
-                this.establecimientosId.push(establecimiento.payload.doc.id);
-                this.establecimientos.push({
-                  id: establecimiento.payload.doc.id,
-                  nombre: establecimiento.payload.doc.data()['nombre'],
-                  foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
-                  nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
-                  sellado: this.sellado,
-                  ubicacion:establecimiento.payload.doc.data()['ubicacion']
+              this._establecimientosFav.getEstablecimientosFavoritos(establecimiento.payload.doc.id)
+                .subscribe(favorito => {
+
+                  if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
+                    this.establecimientosId.push(establecimiento.payload.doc.id);
+                    this.establecimientos.push({
+                      id: establecimiento.payload.doc.id,
+                      nombre: establecimiento.payload.doc.data()['nombre'],
+                      foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
+                      nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
+                      sellado: this.sellado,
+                      ubicacion:establecimiento.payload.doc.data()['ubicacion'],
+                      favorito: favorito
+                    })
+                  }
                 })
-              }
-   
             })
         });
       })
+  }
+
+  postEstablecimientoFavorito(id_establecimiento){
+    if(this.autenticado){
+
+      var establecimiento_fav = {
+        id_establecimiento_fav: id_establecimiento, 
+        id_usuario_fav: localStorage.getItem('user')
+      }
+
+      this._establecimientosFav.postEstablecimientoFavorito(establecimiento_fav)
+
+      var index = this.establecimientosId.indexOf(id_establecimiento);
+      this.establecimientos[index].favorito = true;
+    }
+    else{
+      this.modalController.dismiss({
+        'dismissed': true
+      });
+      this.redireccionarLogin('Inicia sesión para añadir a favoritos')
+      this.router.navigate(['/tabs/tab4'])
+    }
+  }
+
+  deleteEstablecimientoFavorito(id_establecimiento){
+
+    this._establecimientosFav.borrarEstablecimientoFavorito(id_establecimiento)
+    var index = this.establecimientosId.indexOf(id_establecimiento);
+    this.establecimientos[index].favorito = false;
   }
 
   

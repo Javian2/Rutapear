@@ -83,7 +83,8 @@
           <ion-col size="3" class="ion-text-right">
 
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
-              <ion-icon name="heart-outline" style="font-size: 16px;" class=""></ion-icon>
+              <ion-icon (click)="$event.stopPropagation(); postEstablecimientoFavorito(establecimiento.id)" *ngIf="!establecimiento.favorito" name="heart-outline" style="font-size: 16px;" class=""></ion-icon>
+              <ion-icon (click)="$event.stopPropagation(); deleteEstablecimientoFavorito(establecimiento.id)" color="danger" *ngIf="establecimiento.favorito" name="heart" style="font-size: 16px;" class=""></ion-icon>
               <ion-icon name="share-social-outline" style="font-size: 16px;" class=""></ion-icon>
 
             </div>

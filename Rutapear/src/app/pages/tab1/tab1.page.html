@@ -26,7 +26,7 @@
           
           <div (click)="presentPopover($event)" style="display: flex; justify-content: center; align-items: center; height: 37px; background-color: white; border-radius: 8px;">
             <ion-icon color="primary" style="font-size: 20px; --ionicon-stroke-width: 40px;" name="filter-outline"></ion-icon>
-            <ion-badge mode="ios" *ngIf="activarHistorico && contadorFiltros > 0" style="position: absolute; margin-left: 3em; margin-top: 3em;" color="primary">{{contadorFiltros}}</ion-badge>
+            <ion-badge mode="ios" *ngIf="activarHistorico && contadorFiltros > 0 && autenticado" style="position: absolute; margin-left: 3em; margin-top: 3em;" color="primary">{{contadorFiltros}}</ion-badge>
           </div>
           
         </ion-col>
@@ -71,7 +71,8 @@
           <ion-col size="2" class="ion-text-right">
 
             
-            <ion-icon name="heart-outline" style="font-size: 16px;" class="ion-margin-horizontal"></ion-icon>
+            <ion-icon color="danger" *ngIf="ruta.favorita" (click)="$event.stopPropagation(); deleteRutaFavorita(ruta.id);" name="heart" style="font-size: 16px;" class="ion-margin-horizontal"></ion-icon>
+            <ion-icon *ngIf="!ruta.favorita" (click)="$event.stopPropagation(); addRutaFavorita(ruta.id);" name="heart-outline" style="font-size: 16px;" class="ion-margin-horizontal"></ion-icon>
            
             
 

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase.service';
 import { ToastController } from '@ionic/angular';
+import { SelladoService } from '../../services/sellado.service';
+import { RutasFavoritasService } from '../../services/rutas-favoritas.service';
 
 @Component({
   selector: 'app-tab4',
@@ -17,7 +19,9 @@ export class Tab4Page implements OnInit {
   constructor(
     private router: Router,
     public _firebase:FirebaseService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private _sellado:SelladoService,
+    private _favorito:RutasFavoritasService
   ) { }
 
   ngOnInit() {
@@ -46,6 +50,8 @@ export class Tab4Page implements OnInit {
     await this._firebase.signIn(forma.form.value.email, forma.form.value.password);
     if(this._firebase.isLoggedIn){
       this.router.navigate(['/tabs/tab1']);
+      this._sellado.activarHistorico = false;
+      this._favorito.activarFavoritos = false;
     }
     else{
       if(this._firebase.error != ""){
@@ -73,6 +79,8 @@ export class Tab4Page implements OnInit {
   }
 
   cerrarSesion(){
+    this._sellado.activarHistorico = false;
+    this._favorito.activarFavoritos = false;
     this._firebase.logout();
     this.router.navigate(['/tabs/tab1']);
   }

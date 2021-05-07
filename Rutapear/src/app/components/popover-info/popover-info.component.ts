@@ -9,8 +9,10 @@ import { IonCheckbox, PopoverController } from '@ionic/angular';
 export class PopoverInfoComponent implements OnInit {
 
   @Input() activarHistorico
+  @Input() activarFavoritos
 
-  checked:boolean
+  checkedHistoricos:boolean
+  checkedFavoritos:boolean
 
   constructor(
     private popover:PopoverController
@@ -18,20 +20,31 @@ export class PopoverInfoComponent implements OnInit {
 
   ngOnInit() {
 
-    //SI ACCEDEMOS MEDIANTE HISTORICO O NO, PONEMOS POR DEFECTO UN VALOR
+    //AL ACCEDER LOS FILTROS LES PASAMOS DESDE EL COMPONENTE LAS VARIABLES DE ESTADO
 
     if(this.activarHistorico){
-      this.checked = true;
+      this.checkedHistoricos = true;
     }
     else{
-      this.checked = false;
+      this.checkedHistoricos = false;
+    }
+
+    if(this.activarFavoritos){
+      this.checkedFavoritos = true;
+    }
+    else{
+      this.checkedFavoritos = false;
     }
   }
 
   //RECOGE EL VALOR DEL CHECKBOX AL CAMBIAR
 
-  valorCheckbox(event){
-    this.checked = event.detail.checked
+  valorCheckboxHistoricos(event){
+    this.checkedHistoricos = event.detail.checked
+  }
+
+  valorCheckboxFavoritos(event){
+    this.checkedFavoritos = event.detail.checked
   }
 
   //CERRAR SIN DATOS (CANCELAR)
@@ -43,7 +56,7 @@ export class PopoverInfoComponent implements OnInit {
   //CERRAR CON DATOS (APLICAR)
 
   aplicarCheckbox(){
-    this.popover.dismiss(this.checked);
+    this.popover.dismiss([this.checkedHistoricos, this.checkedFavoritos]);
   }
 
   

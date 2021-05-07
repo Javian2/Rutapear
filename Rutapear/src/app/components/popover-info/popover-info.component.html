@@ -4,13 +4,23 @@
 </ion-item>
 
 <ion-item *ngIf="activarHistorico" mode="ios" lines="none">
-  <ion-checkbox #checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckbox($event)" color="primary" checked></ion-checkbox>
+  <ion-checkbox #checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckboxHistoricos($event)" color="primary" checked></ion-checkbox>
   <ion-label>Visitadas</ion-label>
 </ion-item>
 
 <ion-item *ngIf="!activarHistorico" mode="ios" lines="none">
-  <ion-checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckbox($event)" color="primary"></ion-checkbox>
+  <ion-checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckboxHistoricos($event)" color="primary"></ion-checkbox>
   <ion-label>Visitadas</ion-label>
+</ion-item>
+
+<ion-item *ngIf="activarFavoritos" mode="ios" lines="none">
+  <ion-checkbox #checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckboxFavoritos($event)" color="primary" checked></ion-checkbox>
+  <ion-label>Favoritos</ion-label>
+</ion-item>
+
+<ion-item *ngIf="!activarFavoritos" mode="ios" lines="none">
+  <ion-checkbox mode="ios" class="custom-checkbox" (ionChange)="valorCheckboxFavoritos($event)" color="primary"></ion-checkbox>
+  <ion-label>Favoritos</ion-label>
 </ion-item>
 
 <ion-item mode="ios" lines="none">

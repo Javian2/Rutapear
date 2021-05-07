@@ -212,5 +212,10 @@ export class EstablecimientosPage implements OnInit {
     this.establecimientos[index].favorito = false;
   }
 
+
+  llamarAlert(){
+    
+  }
+
   
 }

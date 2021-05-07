@@ -25,7 +25,8 @@ export class Tab1Page implements OnInit {
   fecha_inicio:string;
   fecha_final:string;
   textoBuscar:string;
-  activarHistorico:boolean
+  activarHistorico:boolean;
+  activarFavoritos:boolean;
   contadorFiltros:number = 0;
   autenticado:boolean
 
@@ -41,7 +42,7 @@ export class Tab1Page implements OnInit {
     public popoverController: PopoverController,
     public toastController: ToastController,
     public router:Router,
-    private _rutaFavorita:RutasFavoritasService
+    public _rutaFavorita:RutasFavoritasService
   ) {}
   
 
@@ -63,22 +64,57 @@ export class Tab1Page implements OnInit {
 
     this.rutas = [];
     this.activarHistorico = this._sellado.activarHistorico;
+    this.activarFavoritos = this._rutaFavorita.activarFavoritos;
 
 
-    if(this._sellado.activarHistorico){
-      if(this.autenticado){
-        this.contadorFiltros = 1;
-        this.getHistoricos();
-      }
-      else{
-        this.redireccionarLogin('Inicia sesión para ver tus rutas visitadas');
+    
+
+    //si estamos en historicos o en favoritos
+    if(this._sellado.activarHistorico || this._rutaFavorita.activarFavoritos){
+
+      //si no estamos autenticados
+      if(!this.autenticado){
+        if(this._sellado.activarHistorico){
+          this.redireccionarLogin('Inicia sesión para visualizar tus rutas visitadas')
+        }
+        else{
+          this.redireccionarLogin('Inicia sesión para visualizar tus favoritos')
+        }
         this.router.navigate(['/tabs/tab4'])
       }
+      //si estamos autenticados
+      else{
+
+        //ambos filtros activados
+        if(this._sellado.activarHistorico && this._rutaFavorita.activarFavoritos){
+          this.contadorFiltros = 2;
+          
+        }
+        //solo un filtro activado
+        else{
+          //historicos activado
+          if(this._sellado.activarHistorico && !this._rutaFavorita.activarFavoritos){
+            this.contadorFiltros = 1;
+            this.getHistoricos();
+            
+          }
+          //favoritos activado
+          else{
+            this.contadorFiltros = 1;
+            this.getFavoritos();
+            
+          }
+        }
+      }
+
     }
+    //página de inicio
     else{
       this.contadorFiltros = 0;
       this.getRutas();
     }
+
+    
 
   }
 
@@ -131,46 +167,144 @@ export class Tab1Page implements OnInit {
     this._rutas.getRutas()
       .subscribe(data => {
         data.forEach(ruta => {
-          
-          this._establecimientos.getEstablecimientos(ruta.payload.doc.id)
-            .subscribe(dataEstablecimiento => {
 
-              var exit = false;
+          this._rutaFavorita.getRutasFavoritas(ruta.payload.doc.id)
+            .subscribe(favorito => {
+              this._establecimientos.getEstablecimientos(ruta.payload.doc.id)
+                .subscribe(dataEstablecimiento => {
 
-              dataEstablecimiento.forEach(establecimiento => {
-              
-                this._sellado.getSellados(establecimiento.payload.doc.id)
-                  .subscribe(sellado => {
-                    
-                    if(sellado && !exit){
+                  var exit = false;
 
-                      exit = true;
+                  dataEstablecimiento.forEach(establecimiento => {
+                  
+                    this._sellado.getSellados(establecimiento.payload.doc.id)
+                      .subscribe(sellado => {
+                        
+                        if(sellado && !exit){
 
-                      var fechaInicial:any = ruta.payload.doc.data()['fecha_inicio'].toDate();
-                      this.fecha_inicio = moment(fechaInicial).format('l')
+                          exit = true;
 
-                      var fechaFinal:any = ruta.payload.doc.data()['fecha_final'].toDate();
-                      this.fecha_final = moment(fechaFinal).format('l')
+                          var fechaInicial:any = ruta.payload.doc.data()['fecha_inicio'].toDate();
+                          this.fecha_inicio = moment(fechaInicial).format('l')
 
-                      if(this.rutasIds.includes(ruta.payload.doc.id) == false){
-                        this.rutasIds.push(ruta.payload.doc.id);
-                        this.rutas.push({
-                          id: ruta.payload.doc.id,
-                          nombre: ruta.payload.doc.data()['nombre'],
-                          ubicacion: ruta.payload.doc.data()['ubicacion'],
-                          fecha_inicio: this.fecha_inicio,
-                          fecha_final: this.fecha_final,
-                          imagen: ruta.payload.doc.data()['imagen'],
-                          centro: ruta.payload.doc.data()['centro']
-                        })
-                      }                    
-                    }                
-                  })
-              });
-              //ruta diferente
+                          var fechaFinal:any = ruta.payload.doc.data()['fecha_final'].toDate();
+                          this.fecha_final = moment(fechaFinal).format('l')
+
+                          if(this.rutasIds.includes(ruta.payload.doc.id) == false){
+                            this.rutasIds.push(ruta.payload.doc.id);
+                            this.rutas.push({
+                              id: ruta.payload.doc.id,
+                              nombre: ruta.payload.doc.data()['nombre'],
+                              ubicacion: ruta.payload.doc.data()['ubicacion'],
+                              fecha_inicio: this.fecha_inicio,
+                              fecha_final: this.fecha_final,
+                              imagen: ruta.payload.doc.data()['imagen'],
+                              centro: ruta.payload.doc.data()['centro'],
+                              favorita: favorito
+                            })
+                          }                    
+                        }                
+                      })
+                  });
+                  //ruta diferente
+                })
             })
         });
       })
+  }
+
+  getFavoritos(){
+    this.rutasIds = [];
+
+    this._rutas.getRutas()
+      .subscribe(data => {
+       
+        data.forEach(ruta => {
+          var fechaInicial:any = ruta.payload.doc.data()['fecha_inicio'].toDate();
+          this.fecha_inicio = moment(fechaInicial).format('l')
+
+          var fechaFinal:any = ruta.payload.doc.data()['fecha_final'].toDate();
+          this.fecha_final = moment(fechaFinal).format('l')
+
+            this._rutaFavorita.getRutasFavoritas(ruta.payload.doc.id)
+            .subscribe(favorito => {
+
+              if(favorito){
+                if(this.rutasIds.includes(ruta.payload.doc.id) == false){
+                  this.rutasIds.push(ruta.payload.doc.id);
+                  this.rutas.push({
+                    id: ruta.payload.doc.id,
+                    nombre: ruta.payload.doc.data()['nombre'],
+                    ubicacion: ruta.payload.doc.data()['ubicacion'],
+                    fecha_inicio: this.fecha_inicio,
+                    fecha_final: this.fecha_final,
+                    imagen: ruta.payload.doc.data()['imagen'],
+                    centro: ruta.payload.doc.data()['centro'],
+                    favorita: favorito
+                  })
+                }          
+              }
+            })       
+        });
+      })
+  }
+
+  getHistoricosFavoritos(){
+    this.rutasIds = [];
+
+    this._rutas.getRutas()
+      .subscribe(data => {
+       
+        data.forEach(ruta => {
+          var fechaInicial:any = ruta.payload.doc.data()['fecha_inicio'].toDate();
+          this.fecha_inicio = moment(fechaInicial).format('l')
+
+          var fechaFinal:any = ruta.payload.doc.data()['fecha_final'].toDate();
+          this.fecha_final = moment(fechaFinal).format('l')
+
+            this._rutaFavorita.getRutasFavoritas(ruta.payload.doc.id)
+            .subscribe(favorito => {
+
+              if(favorito){
+
+                this._establecimientos.getEstablecimientos(ruta.payload.doc.id)
+                .subscribe(dataEstablecimiento => {
+
+                  var exit = false;
+
+                  dataEstablecimiento.forEach(establecimiento => {
+                  
+                    this._sellado.getSellados(establecimiento.payload.doc.id)
+                      .subscribe(sellado => {
+                        
+                        if(sellado && !exit){
+
+                          exit = true;
+
+                          if(this.rutasIds.includes(ruta.payload.doc.id) == false){
+                            this.rutasIds.push(ruta.payload.doc.id);
+                            this.rutas.push({
+                              id: ruta.payload.doc.id,
+                              nombre: ruta.payload.doc.data()['nombre'],
+                              ubicacion: ruta.payload.doc.data()['ubicacion'],
+                              fecha_inicio: this.fecha_inicio,
+                              fecha_final: this.fecha_final,
+                              imagen: ruta.payload.doc.data()['imagen'],
+                              centro: ruta.payload.doc.data()['centro'],
+                              favorita: favorito
+                            })
+                          }                    
+                        }                
+                      })
+                  });
+                  //ruta diferente
+                })
+                         
+              }
+            })       
+        });
+      })
+
   }
 
 
@@ -196,7 +330,8 @@ export class Tab1Page implements OnInit {
     const popover = await this.popoverController.create({
       component: PopoverInfoComponent,
       componentProps: {
-        'activarHistorico': this.activarHistorico
+        'activarHistorico': this.activarHistorico,
+        'activarFavoritos': this._rutaFavorita.activarFavoritos
       },
       cssClass: 'popover', 
       event: ev,
@@ -214,27 +349,57 @@ export class Tab1Page implements OnInit {
     const { data } = await popover.onDidDismiss();
 
 
-    //SI LA DATA NO VIENE VACIA REINICIAMOS PARA LLAMAR A UNA DE LAS DOS
+    //SI LA DATA NO VIENE VACIA REINICIAMOS PARA LLAMAR A UNA DE LAS TRES
 
     
+    
 
-    if(data == true || data == false){
-      this.rutas = [];
+    if(data){
+      this.rutas = []
     }
     
 
     //DEPENDIENDO DE SI EL CHECKBOX ES TRUE O FALSE SE LLAMA A UNA FUNCION U OTRA
 
-    if(data == true){
+    if(data[0] == true && data[1] == false){
+      //historicos TRUE favoritos FALSE
+
       this.activarHistorico = true;
+      this._rutaFavorita.activarFavoritos = false;
       this.contadorFiltros = 1;
       this.getHistoricos();
     }
-    if(data == false){
-      this.activarHistorico = false;
-      this.getRutas();
+    if(data[0] == false && data[1] == false){
 
+      //ambos FALSE
+
+      this.activarHistorico = false;
+      this._rutaFavorita.activarFavoritos = false;
+      this.getRutas();
     }
+
+    if(data[1] == true && data[0] == false){
+
+      this.activarHistorico = false;
+      this._rutaFavorita.activarFavoritos = true;
+      this.contadorFiltros = 1;
+      this.getFavoritos();
+
+      //favoritos TRUE historicos FALSE
+    }
+
+    if(data[1] == true && data[0] == true){
+
+      //ambos TRUE
+
+      this.activarHistorico = true;
+      this._rutaFavorita.activarFavoritos = true;
+      this.contadorFiltros = 2;
+      this.getHistoricosFavoritos();
+
+      //ME FALTA AQUÍ HACERME UNA FUNCIÓN QUE ME SAQUE LOS SELLADOS FAVORITOS Y LLAMADLA
+    }
+
 
     
   }
@@ -279,6 +444,11 @@ export class Tab1Page implements OnInit {
     this._rutaFavorita.borrarRutaFavorita(id_ruta)
     var index = this.rutasIds.indexOf(id_ruta);
     this.rutas[index].favorita = false;
+
+    if(this._rutaFavorita.activarFavoritos){
+      this.rutas.splice(index, 1);
+    }
+    
   }
   
 

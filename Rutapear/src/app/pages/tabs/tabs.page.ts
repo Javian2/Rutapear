@@ -17,17 +17,22 @@ export class TabsPage {
   activarHistoricos(i:number){
     switch (i) {
       case 1:
+        
         this._sellado.activarHistorico = false;
         this._favorito.activarFavoritos = false;
         break;
 
       case 2: 
-        this._sellado.activarHistorico = true;
+        
         this._favorito.activarFavoritos = false;
+        this._sellado.activarHistorico = true;
+        break;
 
       case 3: 
+        
         this._sellado.activarHistorico = false;
         this._favorito.activarFavoritos = true;
+        break;
     
       default:
         break;

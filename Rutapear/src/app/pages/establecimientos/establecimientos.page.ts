@@ -7,6 +7,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EstablecimientosFavoritosService } from '../../services/establecimientos-favoritos.service';
+import { ValoracionesPage } from '../valoraciones/valoraciones.page';
+import { ValoracionesService } from '../../services/valoraciones.service';
 
 
 
@@ -35,7 +37,8 @@ export class EstablecimientosPage implements OnInit {
     public barcodeScanner:BarcodeScanner,
     public toastController: ToastController,
     public router:Router,
-    private _establecimientosFav:EstablecimientosFavoritosService
+    private _establecimientosFav:EstablecimientosFavoritosService,
+    private _valoraciones:ValoracionesService
   ) { }
 
 
@@ -158,27 +161,32 @@ export class EstablecimientosPage implements OnInit {
       .subscribe(data => {
         data.forEach(establecimiento => {
           
-          this._sellado.getSellados(establecimiento.payload.doc.id)
-            .subscribe(coincide => {
-              this.sellado = coincide;
+          this._valoraciones.getValoracionMedia(establecimiento.payload.doc.id)
+            .subscribe(valoracion => {
 
               this._establecimientosFav.getEstablecimientosFavoritos(establecimiento.payload.doc.id)
                 .subscribe(favorito => {
 
-                  if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
-                    this.establecimientosId.push(establecimiento.payload.doc.id);
-                    this.establecimientos.push({
-                      id: establecimiento.payload.doc.id,
-                      nombre: establecimiento.payload.doc.data()['nombre'],
-                      foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
-                      nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
-                      sellado: this.sellado,
-                      ubicacion:establecimiento.payload.doc.data()['ubicacion'],
-                      favorito: favorito
+                  this._sellado.getSellados(establecimiento.payload.doc.id)
+                    .subscribe(coincide => {
+                      this.sellado = coincide;
+
+                      if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
+                        this.establecimientosId.push(establecimiento.payload.doc.id);
+                        this.establecimientos.push({
+                          id: establecimiento.payload.doc.id,
+                          nombre: establecimiento.payload.doc.data()['nombre'],
+                          foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
+                          nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
+                          sellado: this.sellado,
+                          ubicacion:establecimiento.payload.doc.data()['ubicacion'],
+                          favorito: favorito,
+                          valoracion: valoracion
+                        })
+                      }
                     })
-                  }
                 })
-            })
+            })          
         });
       })
   }
@@ -213,8 +221,16 @@ export class EstablecimientosPage implements OnInit {
   }
 
 
-  llamarAlert(){
-    
+  async llamarValoraciones(id_establecimiento) {
+    const modal = await this.modalController.create({
+      component: ValoracionesPage,
+      cssClass: 'estiloValoraciones',
+      backdropDismiss: false,
+      componentProps: {
+        'id_establecimiento': id_establecimiento
+      }
+    });
+    return await modal.present();
   }
 
   

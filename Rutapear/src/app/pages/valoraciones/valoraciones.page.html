@@ -1,0 +1,53 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-title style="font-family: 'Nunito'; font-size: 20px; font-weight: bold; color: black;" class="ion-text-center">¡Establecimiento sellado!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-margin-top">
+
+  <div style="text-align: center;" class="ion-margin-top">
+    <ion-label style="font-size: 18px; font-weight: bold; font-family: 'Nunito'; text-align: center;" color="primary" class="ion-text-center">¿Desea calificar tu experiencia en este establecimiento? ¡Tu valoración es de gran ayuda!
+    </ion-label>
+  </div>
+  
+  <div style="text-align: center; margin-top: 4em;">
+    <ion-icon *ngIf="!estrella1" (click)="estiloEstrella(1)" class="estrella" name="star-outline"></ion-icon>
+    <ion-icon *ngIf="estrella1" color="primary" (click)="estiloEstrella(1)" class="estrella" name="star"></ion-icon>
+
+    <ion-icon *ngIf="!estrella2" (click)="estiloEstrella(2)" class="estrella" name="star-outline"></ion-icon>
+    <ion-icon *ngIf="estrella2" color="primary" (click)="estiloEstrella(2)" class="estrella" name="star"></ion-icon>
+
+    <ion-icon *ngIf="!estrella3" (click)="estiloEstrella(3)" class="estrella" name="star-outline"></ion-icon>
+    <ion-icon *ngIf="estrella3" color="primary" (click)="estiloEstrella(3)" class="estrella" name="star"></ion-icon>
+    
+    <ion-icon *ngIf="!estrella4" (click)="estiloEstrella(4)" class="estrella" name="star-outline"></ion-icon>
+    <ion-icon *ngIf="estrella4" color="primary" (click)="estiloEstrella(4)" class="estrella" name="star"></ion-icon>
+
+    <ion-icon *ngIf="!estrella5" (click)="estiloEstrella(5)" class="estrella" name="star-outline"></ion-icon>
+    <ion-icon *ngIf="estrella5" color="primary" (click)="estiloEstrella(5)" class="estrella" name="star"></ion-icon>
+  </div>
+
+  <ion-item lines="none" style="margin-top: 1em;">
+    <textarea style="border-radius: 10px;" rows="6" cols="50" placeholder="Aquí puedes proporcionar una opinión más detallada"></textarea>
+  </ion-item>
+
+  <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin-top: 2em;">
+    <div>
+      <ion-button (click)="noValorar();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
+        Ahora no
+      </ion-button>
+    </div>
+    <div>
+      <ion-button (click)="mandarValoracion();" class="ion-margin-top" shape="round" color="primary" type="submit" style="text-align: center; font-weight: bold;">
+        Enviar
+      </ion-button>
+    </div>
+  </div>
+
+
+
+
+
+
+</ion-content>

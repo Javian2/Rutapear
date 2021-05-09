@@ -1,6 +1,7 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-    <ion-title style="font-family: 'Nunito'; font-size: 20px; font-weight: bold; color: black;" class="ion-text-center">¡Establecimiento sellado!</ion-title>
+    <ion-title *ngIf="!estado" style="font-family: 'Nunito'; font-size: 20px; font-weight: bold; color: black;" class="ion-text-center">¡Establecimiento sellado!</ion-title>
+    <ion-title *ngIf="estado" style="font-family: 'Nunito'; font-size: 20px; font-weight: bold; color: black;" class="ion-text-center">¡Bienvenido de vuelta!</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -34,8 +35,11 @@
 
   <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin-top: 2em;">
     <div>
-      <ion-button (click)="noValorar();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
+      <ion-button *ngIf="!estado" (click)="noValorar();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
         Ahora no
+      </ion-button>
+      <ion-button *ngIf="estado" (click)="noValorar();" class="ion-margin-top" shape="round" color="secondary" type="submit" style="text-align: center; font-weight: bold;">
+        No valorar
       </ion-button>
     </div>
     <div>

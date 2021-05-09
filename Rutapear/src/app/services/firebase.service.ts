@@ -19,6 +19,7 @@ export class FirebaseService {
       .then( res => {
         this.isLoggedIn = true;
         localStorage.setItem('user', res.user.uid)
+        localStorage.setItem('username', res.user.email)
       })
       .catch(err => {
         this.error = err.code;
@@ -30,6 +31,8 @@ export class FirebaseService {
       .then( (res:any) => {
         this.isLoggedIn = true;
         localStorage.setItem('user', res.user.uid)
+        console.log(res);
+        localStorage.setItem('username', res.user.email)
       })
       .catch(err => {
         this.error = err.code;

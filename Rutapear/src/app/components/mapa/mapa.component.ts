@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { ValoracionesPage } from '../../pages/valoraciones/valoraciones.page';
+import { EstablecimientosFavoritosService } from '../../services/establecimientos-favoritos.service';
 
 
 @Component({
@@ -26,6 +28,7 @@ export class MapaComponent implements OnInit {
 
   booleanPopup:boolean = false;
   variablePopup:boolean = false;
+  valoracion = -1;
 
   datosEstablecimiento:any
 
@@ -46,7 +49,8 @@ export class MapaComponent implements OnInit {
     public _firestore:AngularFirestore,
     public barcodeScanner:BarcodeScanner,
     public toastController: ToastController,
-    public router:Router
+    public router:Router,
+    private _establecimientosFav:EstablecimientosFavoritosService
   ) { }
 
   ngOnInit() {
@@ -136,45 +140,13 @@ export class MapaComponent implements OnInit {
           marker.getElement().addEventListener('click', () => {
 
             this.booleanPopup = !this.booleanPopup;
-            this.datosEstablecimiento = establecimiento;
-
-            /* console.log(this.variablePopup);
-
-            if(this.variablePopup == false){
-              this.booleanPopup = true;
-              this.datosEstablecimiento = establecimiento;
-
-              if(this.booleanPopup){
-                marker.getElement().querySelectorAll('svg g[fill="' + marker._color + '"]')[0].setAttribute("fill", 'blue');
-                marker._color = 'blue'
-                this.variablePopup = true;
-              }
-              else{
-                marker.getElement().querySelectorAll('svg g[fill="' + marker._color + '"]')[0].setAttribute("fill", 'red');
-                marker._color = 'red'
-              }
-            } */
-            
-
-
-  
-            
-          })
-        
+            this.datosEstablecimiento = establecimiento;     
+          })     
         })
     });
-
-  
   }
 
-  /* addGeocoder(){
-    this.mapa.addControl(
-      new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl
-      })
-    );
-  } */
+
 
   sellarEstablecimiento(id){
 
@@ -192,7 +164,7 @@ export class MapaComponent implements OnInit {
     else{
       this.barcodeScanner.scan(options).then(qrData => {
         if(qrData.text == id){
-          this.qrCorrecto('Establecimiento sellado correctamente')
+          
           //PUSH
   
           var sellado = {
@@ -204,6 +176,12 @@ export class MapaComponent implements OnInit {
 
           var index = this.establecimientosId.indexOf(id);
           this.establecimientos[index].sellado = true;
+
+          //VALORACION
+
+          this.llamarValoraciones(id);
+
+          
           
         }
         else{
@@ -215,7 +193,59 @@ export class MapaComponent implements OnInit {
 
       
     }
+    
   }
+
+  async llamarValoraciones(id_establecimiento, estado?) {
+    
+    const modal = await this.modalController.create({
+      component: ValoracionesPage,
+      cssClass: 'estiloValoraciones',
+      backdropDismiss: false,
+      componentProps: {
+        'id_establecimiento': id_establecimiento,
+        'estado': estado
+      }
+    });
+
+    //ACTUALIZAR TU VOTO Y VALORACIÓN MEDIA DIRECTAMENTE
+
+    modal.onDidDismiss()
+      .then((data => {
+
+        var index = this.establecimientosId.indexOf(id_establecimiento);
+
+        if(data.data == -2){
+          this.valoracion = -2
+        }
+        else{
+          if(data.data){
+            this.valoracion = data.data
+          }
+          else{
+            this.valoracion = -1;
+          }
+        }
+
+        
+        this.establecimientos[index].valorado = this.valoracion;
+
+        var vMedia = this.establecimientos[index].valoracion[0];
+        var numValoraciones = this.establecimientos[index].valoracion[1];
+        var numAux = (vMedia*numValoraciones + this.valoracion)/(numValoraciones + 1)
+        
+
+        if(data.data && data.data != -2){
+          this.establecimientos[index].valoracion[0] = Math.round(numAux*10)/10
+          this.establecimientos[index].valoracion[1] = numValoraciones + 1;
+        }
+
+
+      }))
+
+    return await modal.present();
+  }
+
 
   async redireccionarLogin(mensaje:string) {
     const toast = await this.toastController.create({
@@ -248,6 +278,35 @@ export class MapaComponent implements OnInit {
       cssClass: 'toastRegistro'
     });
     toast.present();
+  }
+
+  postEstablecimientoFavorito(id_establecimiento){
+    if(localStorage.getItem('user')){
+
+      var establecimiento_fav = {
+        id_establecimiento_fav: id_establecimiento, 
+        id_usuario_fav: localStorage.getItem('user')
+      }
+
+      this._establecimientosFav.postEstablecimientoFavorito(establecimiento_fav)
+
+      var index = this.establecimientosId.indexOf(id_establecimiento);
+      this.establecimientos[index].favorito = true;
+    }
+    else{
+      this.modalController.dismiss({
+        'dismissed': true
+      });
+      this.redireccionarLogin('Inicia sesión para añadir a favoritos')
+      this.router.navigate(['/tabs/tab4'])
+    }
+  }
+
+  deleteEstablecimientoFavorito(id_establecimiento){
+
+    this._establecimientosFav.borrarEstablecimientoFavorito(id_establecimiento)
+    var index = this.establecimientosId.indexOf(id_establecimiento);
+    this.establecimientos[index].favorito = false;
   }
 
   

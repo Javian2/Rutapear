@@ -12,6 +12,7 @@ import { ValoracionesService } from '../../services/valoraciones.service';
 export class ValoracionesPage implements OnInit {
 
   @Input() id_establecimiento;
+  @Input() estado
 
   estrella1:boolean = false;
   estrella2:boolean = false;
@@ -27,10 +28,18 @@ export class ValoracionesPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
 
   noValorar(){
-    this.modalController.dismiss();
+
+    if(this.estado){
+      this._valoraciones.postValoracion(this.id_establecimiento, -2);
+      this.modalController.dismiss(this.estado);
+    }
+    else{
+      this.modalController.dismiss();
+    }
   }
 
   async presentToast() {

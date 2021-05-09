@@ -79,11 +79,16 @@
 
 <ion-content [fullscreen]="true" *ngIf="iniciadoSesion">
 
-  <div style="display: flex; justify-content: center;">
+  <div style="display: flex; justify-content: center; flex-direction: column; align-items: center; margin-top: 1em;">
 
-    <ion-button (click)="cerrarSesion();" class="ion-margin-top" shape="round" color="primary" style="text-align: center; font-weight: bold;">
-      Cerrar sesión
-    </ion-button>
+    <div>
+      <ion-label style="font-size: 20px; font-weight: bold; font-family: 'Nunito';">Bienvenido </ion-label><ion-label color="primary" style="font-size: 20px; font-weight: bold; font-family: 'Nunito';">{{nombre}}</ion-label>
+    </div>
+    <div>
+      <ion-button (click)="cerrarSesion();" class="ion-margin-top" shape="round" color="primary" style="text-align: center; font-weight: bold;">
+        Cerrar sesión
+      </ion-button>
+    </div>
 
   </div>
 

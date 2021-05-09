@@ -15,6 +15,7 @@ export class Tab4Page implements OnInit {
 
   iniciadoSesion:boolean = false;
   mensajeError:string = "";
+  nombre:string = "";
 
   constructor(
     private router: Router,
@@ -31,6 +32,7 @@ export class Tab4Page implements OnInit {
   ionViewDidEnter(){
     if(localStorage.getItem('user')){
       this.iniciadoSesion = true;
+      this.nombre = localStorage.getItem('username');
     }
     else{
       this.iniciadoSesion = false;

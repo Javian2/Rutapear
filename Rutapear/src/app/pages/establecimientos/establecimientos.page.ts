@@ -123,9 +123,6 @@ export class EstablecimientosPage implements OnInit {
       
     }
     
-      
-    
-  //MENSAJES INFORMATIVOS
   }
 
   async qrCorrecto(mensaje:string) {
@@ -236,13 +233,15 @@ export class EstablecimientosPage implements OnInit {
   }
 
 
-  async llamarValoraciones(id_establecimiento) {
+  async llamarValoraciones(id_establecimiento, estado?) {
+    
     const modal = await this.modalController.create({
       component: ValoracionesPage,
       cssClass: 'estiloValoraciones',
       backdropDismiss: false,
       componentProps: {
-        'id_establecimiento': id_establecimiento
+        'id_establecimiento': id_establecimiento,
+        'estado': estado
       }
     });
 
@@ -251,13 +250,21 @@ export class EstablecimientosPage implements OnInit {
     modal.onDidDismiss()
       .then((data => {
 
-        if(data.data){
-          this.valoracion = data.data
+        var index = this.establecimientosId.indexOf(id_establecimiento);
+
+        if(data.data == -2){
+          this.valoracion = -2
         }
         else{
-          this.valoracion = -1;
+          if(data.data){
+            this.valoracion = data.data
+          }
+          else{
+            this.valoracion = -1;
+          }
         }
-        var index = this.establecimientosId.indexOf(id_establecimiento);
+
+        
         this.establecimientos[index].valorado = this.valoracion;
 
         var vMedia = this.establecimientos[index].valoracion[0];
@@ -265,11 +272,11 @@ export class EstablecimientosPage implements OnInit {
         var numAux = (vMedia*numValoraciones + this.valoracion)/(numValoraciones + 1)
         
 
-        if(data.data){
+        if(data.data && data.data != -2){
           this.establecimientos[index].valoracion[0] = Math.round(numAux*10)/10
           this.establecimientos[index].valoracion[1] = numValoraciones + 1;
-
         }
+
 
       }))
 

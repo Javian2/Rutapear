@@ -30,9 +30,12 @@ export class ValoracionesService {
     this._firestore.collection('valoraciones_establecimientos', ref => ref.where('id_establecimiento', '==', id_establecimiento))
       .snapshotChanges()
         .subscribe(data => {
-          numValoraciones = data.length;
+          /* numValoraciones = data.length; */
           data.forEach(valoraciones => {
-            valoracionMedia += valoraciones.payload.doc.data()['valoracion']
+            if(valoraciones.payload.doc.data()['valoracion'] != -2){
+              valoracionMedia += valoraciones.payload.doc.data()['valoracion']
+              numValoraciones++;
+            }
           });
 
           if(numValoraciones == 0){

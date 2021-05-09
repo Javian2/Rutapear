@@ -105,7 +105,7 @@ export class ValoracionesPage implements OnInit {
     if(this.estrella1 || this.estrella2 || this.estrella3 || this.estrella4 || this.estrella5){
       this._valoraciones.postValoracion(this.id_establecimiento, this.valoracion);
       this.presentToastOk();
-      this.modalController.dismiss();
+      this.modalController.dismiss(this.valoracion);
 
     }
     else{

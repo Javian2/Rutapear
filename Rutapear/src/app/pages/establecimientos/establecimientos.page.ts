@@ -27,6 +27,7 @@ export class EstablecimientosPage implements OnInit {
   sellado:any = false;
   establecimientosId:any[] = [];
   autenticado:boolean
+  valoracion = -1;
 
 
   constructor(
@@ -92,7 +93,7 @@ export class EstablecimientosPage implements OnInit {
     else{
       this.barcodeScanner.scan(options).then(qrData => {
         if(qrData.text == id){
-          this.qrCorrecto('Establecimiento sellado correctamente')
+          
           //PUSH
   
           var sellado = {
@@ -104,6 +105,12 @@ export class EstablecimientosPage implements OnInit {
 
           var index = this.establecimientosId.indexOf(id);
           this.establecimientos[index].sellado = true;
+
+          //VALORACION
+
+          this.llamarValoraciones(id);
+
+          
           
         }
         else{
@@ -167,23 +174,31 @@ export class EstablecimientosPage implements OnInit {
               this._establecimientosFav.getEstablecimientosFavoritos(establecimiento.payload.doc.id)
                 .subscribe(favorito => {
 
-                  this._sellado.getSellados(establecimiento.payload.doc.id)
-                    .subscribe(coincide => {
-                      this.sellado = coincide;
+                  this._valoraciones.getValorado(establecimiento.payload.doc.id)
+                    .subscribe(valorado => {
 
-                      if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
-                        this.establecimientosId.push(establecimiento.payload.doc.id);
-                        this.establecimientos.push({
-                          id: establecimiento.payload.doc.id,
-                          nombre: establecimiento.payload.doc.data()['nombre'],
-                          foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
-                          nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
-                          sellado: this.sellado,
-                          ubicacion:establecimiento.payload.doc.data()['ubicacion'],
-                          favorito: favorito,
-                          valoracion: valoracion
+                      
+
+                      this._sellado.getSellados(establecimiento.payload.doc.id)
+                        .subscribe(coincide => {
+
+                          this.sellado = coincide;
+
+                          if(this.establecimientosId.includes(establecimiento.payload.doc.id) == false){
+                            this.establecimientosId.push(establecimiento.payload.doc.id);
+                            this.establecimientos.push({
+                              id: establecimiento.payload.doc.id,
+                              nombre: establecimiento.payload.doc.data()['nombre'],
+                              foto_tapa: establecimiento.payload.doc.data()['foto_tapa'],
+                              nombre_tapa: establecimiento.payload.doc.data()['nombre_tapa'],
+                              sellado: this.sellado,
+                              ubicacion:establecimiento.payload.doc.data()['ubicacion'],
+                              favorito: favorito,
+                              valoracion: valoracion,
+                              valorado: valorado
+                            })
+                          }
                         })
-                      }
                     })
                 })
             })          
@@ -230,8 +245,35 @@ export class EstablecimientosPage implements OnInit {
         'id_establecimiento': id_establecimiento
       }
     });
+
+    //ACTUALIZAR TU VOTO Y VALORACIÓN MEDIA DIRECTAMENTE
+
+    modal.onDidDismiss()
+      .then((data => {
+
+        if(data.data){
+          this.valoracion = data.data
+        }
+        else{
+          this.valoracion = -1;
+        }
+        var index = this.establecimientosId.indexOf(id_establecimiento);
+        this.establecimientos[index].valorado = this.valoracion;
+
+        var vMedia = this.establecimientos[index].valoracion[0];
+        var numValoraciones = this.establecimientos[index].valoracion[1];
+        var numAux = (vMedia*numValoraciones + this.valoracion)/(numValoraciones + 1)
+        
+
+        if(data.data){
+          this.establecimientos[index].valoracion[0] = Math.round(numAux*10)/10
+          this.establecimientos[index].valoracion[1] = numValoraciones + 1;
+
+        }
+
+      }))
+
     return await modal.present();
   }
 
-  
 }

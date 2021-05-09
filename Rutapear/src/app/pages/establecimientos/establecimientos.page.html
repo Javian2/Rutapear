@@ -76,8 +76,8 @@
               <ion-icon name="location-outline"></ion-icon>
               {{establecimiento.ubicacion}}
             </ion-label>
-            <ion-label color="primary" class="ion-align-items-center" class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';">
-              <ion-icon color="primary" name="star-outline"></ion-icon>
+            <ion-label class="ion-align-items-center" class="ion-margin-top" style="font-size: 12px; font-weight: bold; font-family: 'Nunito';">
+              <ion-icon name="star-outline"></ion-icon>
               {{establecimiento.valoracion[0]}} ({{establecimiento.valoracion[1]}}<span *ngIf="establecimiento.valoracion[1] == 1"> valoracion)</span><span *ngIf="establecimiento.valoracion[1] == 0 || establecimiento.valoracion[1] > 1"> valoraciones)</span>
             </ion-label>
             
@@ -89,15 +89,21 @@
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
               <ion-icon (click)="$event.stopPropagation(); postEstablecimientoFavorito(establecimiento.id)" *ngIf="!establecimiento.favorito" name="heart-outline" style="font-size: 16px;" class=""></ion-icon>
               <ion-icon (click)="$event.stopPropagation(); deleteEstablecimientoFavorito(establecimiento.id)" color="danger" *ngIf="establecimiento.favorito" name="heart" style="font-size: 16px;" class=""></ion-icon>
-              <ion-icon name="share-social-outline" (click)="llamarValoraciones(establecimiento.id);" style="font-size: 16px;" class=""></ion-icon>
+              <ion-icon name="share-social-outline" style="font-size: 16px;" class=""></ion-icon>
 
             </div>
 
-            <ion-label *ngIf="establecimiento.sellado" color="primary" class="ion-margin-top" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 7em; margin-right: 1em;">
+            <!-- <ion-label *ngIf="establecimiento.sellado" color="primary" class="ion-margin-top" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 7em; margin-right: 1em;">
               Sellado
+            </ion-label> -->
+            <ion-label *ngIf="establecimiento.sellado && establecimiento.valorado > -1" color="primary" class="ion-margin-top" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 7em;">
+              Valorado: {{establecimiento.valorado}}
             </ion-label>
             <ion-button *ngIf="!establecimiento.sellado" shape="round" color="primary" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 6em; margin-right: 0.6em;" (click)="sellarEstablecimiento(establecimiento.id)">
               Sellar
+            </ion-button>
+            <ion-button *ngIf="establecimiento.sellado && establecimiento.valorado == -1" shape="round" color="primary" style="font-family: 'Nunito'; font-size: 12px; font-weight: bold; margin-top: 6em; margin-right: 0.6em;" (click)="llamarValoraciones(establecimiento.id);">
+              Valorar
             </ion-button>
            
             

@@ -49,6 +49,29 @@ export class ValoracionesService {
         return respuesta.asObservable();
   }
 
+  getValorado(id_establecimiento){
+    var subject = new Subject<number>();
+
+    this._firestore.collection('valoraciones_establecimientos', ref => ref.where('id_usuario', '==', `${localStorage.getItem('user')}`).where('id_establecimiento', '==', `${id_establecimiento}`)).snapshotChanges()
+      .subscribe(data => {
+
+        
+        if(data.length == 0){
+          subject.next(-1);
+        }
+        else{
+          if(data[0].payload.doc.data()['id_usuario'] != localStorage.getItem('user')){
+            subject.next(-1);
+          }
+          else{
+            
+            subject.next(data[0].payload.doc.data()['valoracion']);
+          }
+        }
+      })
+      return subject.asObservable();
+  }
+
   
 
 }

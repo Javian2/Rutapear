@@ -4,12 +4,11 @@
 
 ## Project description
 
-Rutapear es una plataforma que permite organizar, gestionar y visualizar rutas gastronómicas. Para dar contexto, una ruta gastronómica es un evento gastronómico centrado normalmente en un producto o tema principal donde participan diversos establecimientos. Durante el evento, la gente tiene que visitar cada uno de los establecimientos participantes con la idea de probar el producto ofrecido. Normalmente, la gente sigue un mapa o similar que muestra cada uno de los restaurantes que participan en el evento además de su ubicación mediante la ayuda de un mapa. 
+Rutapear is a platform that allows you to organise, manage and visualise gastronomic routes. To give context, a gastronomic route is a gastronomic event usually focused on a main product or theme where several establishments participate. During the event, people have to visit each of the participating establishments with the idea of tasting the product offered. Normally, people follow a map or similar that shows each of the restaurants participating in the event as well as their location with the help of a map.
 
-Volviendo al proyecto, primeramente, los organizadores del evento tienen la posibilidad de crear una ruta y añadir a esta los diferentes establecimientos que participarán. Para ello, la plataforma cuenta con una base de datos realizada en Firebase donde se almacenan toda la información de cada una de las rutas gastronómicas. La idea es que el administrador del sistema reciba la información y este se encargue de añadirla. 
+Going back to the project, first of all, the event organisers have the possibility to create a route and add to it the different establishments that will participate. To do this, the platform has a Firebase database where all the information of each of the gastronomic routes is stored. The idea is that the system administrator receives the information and is responsible for adding it.
 
-Por otro lado, los usuarios cuentan con una aplicación móvil donde pueden visualizar cada una de las rutas disponibles actualmente. A su vez, también pueden interactuar con ellas con el objetivo de visualizar los restaurantes participantes, conocer la ubicación de estos además del producto que ofrecen, saber qué establecimientos se han visitado, etc. 
-
+On the other hand, users have a mobile application where they can view each of the routes currently available. At the same time, they can also interact with them in order to view the participating restaurants, find out their location as well as the product they offer, find out which establishments have been visited, etc.
 
 ## Technologies used
 
@@ -20,9 +19,28 @@ Por otro lado, los usuarios cuentan con una aplicación móvil donde pueden visu
 - Sass
 - Firebase
 - Mapbox
+- Figma (to do the designs of the application)
 
 ## Functionalities
 
+- Login and register.
+- Blocking of functionalities in the event of not having logged in.
+- Visualisation of gastronomic routes and the establishments that make them up with all their information. 
+- System of routes and favourite establishments.
+- System of recent routes in which you have participated. 
+- Filtering of gastronomic routes and establishments by title and location. 
+- Visualisation of the establishments in map mode with the different locations of the restaurants. 
+- Redirection in map mode to the user's current location and to the centre of the route. 
+- System for stamping establishments by means of QR codes to verify the restaurants visited. 
+- Rating system after stamping an establishment. 
+
+Below, you can see a demo of the application with detailed functionalities. This demo has been recorded while running the application on my own mobile device, generating an APK for it. 
+
+https://user-images.githubusercontent.com/52936547/210019286-d599f1eb-f741-4a9a-a9ca-96ad0a693c9e.mp4
+
+On the other hand, prior to the implementation of the application, the complete design of the platform has been carried out in Figma. Here we can see an example of the interfaces: 
+
+<img height="550px" width="700px" src="https://user-images.githubusercontent.com/52936547/210019950-abd3e324-2662-4a9f-b772-5cbeeeea00a3.png"/>
 
 
 

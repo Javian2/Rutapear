@@ -21,7 +21,7 @@ On the other hand, users have a mobile application where they can view each of t
 - Mapbox
 - Figma (to do the designs of the application)
 
-## Functionalities
+## Features
 
 - Login and register.
 - Blocking of functionalities in the event of not having logged in.
